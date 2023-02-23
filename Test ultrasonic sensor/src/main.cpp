@@ -7,11 +7,13 @@ using namespace std;
 #define trigPin 12
 #define echoPin 13
 #define   LEDlampYellow 26
-#define buttonPin 2
+#define buttonStartPin 2
+#define buttonResetPin 19
 
 int count_values =0;
 int total_count=0;
 string sequence1 ="";
+string total_code="";
 bool start_code = false;
 
 struct SequenceToDigit{
@@ -28,7 +30,7 @@ SequenceToDigit convert_map[] = {
     {"--...", 7},
     {"---..", 8},
     {"----.", 9},
-    {"-----", 10}
+    {"-----", 0}
 };
 
 // Function to convert Morse code to digits
@@ -42,21 +44,16 @@ int morseToDigit(string sequence1) {
   return '\0';
 }
 
-void setup() {
-  Serial.begin (9600);
-  pinMode(trigPin,   OUTPUT);
-  pinMode(echoPin, INPUT);
-  pinMode(LEDlampYellow, OUTPUT);
-  pinMode(buttonPin, INPUT_PULLUP);
+void reset(){
+    total_code.clear();
+    count_values = 0;
+    total_count = 0;
+    sequence1.clear();
+    Serial.println("alles cleared");
 }
 
-void   loop() {
-  if (digitalRead(buttonPin)){
-      start_code=true;
-      Serial.println("start code true");
-  }
-  if (start_code){
-      long durationindigit, distanceincm;
+void read_sensor(){
+  long durationindigit, distanceincm;
   digitalWrite(trigPin, LOW);   
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
@@ -85,9 +82,37 @@ void   loop() {
   // Serial.println("   cm");
   if (sequence1.length()>4){
     Serial.println(morseToDigit(sequence1));
+    total_code.append(to_string(morseToDigit(sequence1)));
     sequence1.clear();
+    if (total_code.length()==5){
+      Serial.print("total code is:");
+      Serial.println(total_code.c_str());
+      total_code.clear();
+    }
     start_code=false;
+  }  
+}
+
+void setup() {
+  Serial.begin (9600);
+  pinMode(trigPin,   OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(LEDlampYellow, OUTPUT);
+  pinMode(buttonStartPin, INPUT_PULLDOWN);
+  pinMode(buttonResetPin, INPUT_PULLDOWN);
+}
+
+void   loop() {
+  if (digitalRead(buttonResetPin)){
+    reset();
+    delay(100);
   }
-  delay(300);
+  if (digitalRead(buttonStartPin)){
+      start_code=true;
+      Serial.println("start code true");
+  }
+  if (start_code){
+    read_sensor();
+    delay(300);    
   }
 }
