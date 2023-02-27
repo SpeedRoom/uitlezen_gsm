@@ -1,0 +1,13 @@
+aansluitschema TFT:
+
+SDO/MISO -> GPIO 19
+LED -> 3.3 V
+SCK -> GPIO 18
+SDI/MOSI -> GPIO 23
+DC/RS -> GPIO 21
+RESET -> GPIO 17
+CS -> GPIO 22
+GND -> GND
+VCC ->  3.3 V
+
+
