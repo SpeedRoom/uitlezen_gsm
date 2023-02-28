@@ -6,15 +6,19 @@ using namespace std;
 
 #define trigPin 12
 #define echoPin 13
-#define   LEDlampYellow 26
+#define LEDlampYellow 26
 #define buttonStartPin 2
 #define buttonResetPin 19
+#define LEDlampGreen 25
+#define Lock_Relay_pin 23
+#define LEDlampRed 33
 
 int count_values =0;
 int total_count=0;
 string sequence1 ="";
 string total_code="";
 bool start_code = false;
+string code = "8152";
 
 struct SequenceToDigit{
   string seq;
@@ -49,6 +53,9 @@ void reset(){
     count_values = 0;
     total_count = 0;
     sequence1.clear();
+    digitalWrite(LEDlampGreen,LOW);
+    digitalWrite(LEDlampRed,LOW);
+    digitalWrite(Lock_Relay_pin,LOW);
     Serial.println("alles cleared");
 }
 
@@ -84,10 +91,22 @@ void read_sensor(){
     Serial.println(morseToDigit(sequence1));
     total_code.append(to_string(morseToDigit(sequence1)));
     sequence1.clear();
-    if (total_code.length()==5){
+    if (total_code.length()==4){
       Serial.print("total code is:");
       Serial.println(total_code.c_str());
-      total_code.clear();
+      if (code == total_code){
+        Serial.println("de code is sws correct ");
+        digitalWrite(LEDlampGreen,HIGH);
+        digitalWrite(Lock_Relay_pin,HIGH);
+        delay(5000);
+        reset();
+      }
+      else {
+        Serial.println("code is niet coreect broer");
+        digitalWrite(LEDlampRed,HIGH);
+      
+      }
+    total_code.clear();
     }
     start_code=false;
   }  
@@ -98,8 +117,12 @@ void setup() {
   pinMode(trigPin,   OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(LEDlampYellow, OUTPUT);
+  pinMode(LEDlampGreen, OUTPUT);
+  pinMode(LEDlampRed, OUTPUT);
+  pinMode(Lock_Relay_pin,OUTPUT);
   pinMode(buttonStartPin, INPUT_PULLDOWN);
   pinMode(buttonResetPin, INPUT_PULLDOWN);
+  digitalWrite(Lock_Relay_pin,LOW);
 }
 
 void   loop() {
