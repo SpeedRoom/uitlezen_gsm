@@ -4,14 +4,14 @@
 
 using namespace std;
 
-#define trigPin 12
-#define echoPin 13
-#define LEDlampYellow 26
+#define trigPin 17
+#define echoPin 16
+#define LEDlampYellow 19
 #define buttonStartPin 2
-#define buttonResetPin 19
-#define LEDlampGreen 25
-#define Lock_Relay_pin 23
-#define LEDlampRed 33
+#define buttonResetPin 4
+#define LEDlampGreen 18
+#define Lock_Relay_pin 32
+#define LEDlampRed 5
 
 int count_values =0;
 int total_count=0;
@@ -104,7 +104,9 @@ void read_sensor(){
       else {
         Serial.println("code is niet coreect broer");
         digitalWrite(LEDlampRed,HIGH);
-      
+        delay(2000);
+        digitalWrite(LEDlampRed,LOW);
+        reset();
       }
     total_code.clear();
     }
