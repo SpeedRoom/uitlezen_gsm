@@ -1,8 +1,0 @@
-relay: gpio23 -->gpio 32 check
-leds: gpio26--> gpio19 check
-	gpio25--> gpio18 check
-	gpio33--> gpio5 check
-ultrasonic: gpio12-->gpio17 check
-		gpio13-->gpio16 check
-buttons: gpio2 blijft check
-		gpio19-->gpio4 check
