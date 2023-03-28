@@ -1,6 +1,11 @@
+// naam esp: espultrasoon
+// wachtwoord esp: espultrasoon
+
 #include <Arduino.h>
 #include <string>
 #include <map>
+#include <WiFi.h>
+#include "OTAlib.h"
 
 using namespace std;
 
@@ -12,6 +17,9 @@ using namespace std;
 #define LEDlampGreen 18
 #define Lock_Relay_pin 32
 #define LEDlampRed 5
+
+//OTA
+OTAlib ota("NETGEAR68", "excitedtuba713");
 
 int count_values =0;
 int total_count=0;
@@ -115,6 +123,11 @@ void read_sensor(){
 }
 
 void setup() {
+  // OTA
+  ota.setHostname("esplaser");  
+  ota.setPassword("esplaser");
+  ota.begin();
+  
   Serial.begin (9600);
   pinMode(trigPin,   OUTPUT);
   pinMode(echoPin, INPUT);
