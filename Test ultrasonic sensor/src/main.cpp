@@ -124,8 +124,8 @@ void read_sensor(){
 
 void setup() {
   // OTA
-  ota.setHostname("esplaser");  
-  ota.setPassword("esplaser");
+  ota.setHostname("espultrasoon");  
+  ota.setPassword("espultrasoon");
   ota.begin();
   
   Serial.begin (9600);
