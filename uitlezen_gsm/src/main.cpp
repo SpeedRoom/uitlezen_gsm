@@ -105,9 +105,9 @@ void Alinea6_1(){
 void setup() {
 
   // OTA
-  ota.setHostname("espgsm");  
+  /* ota.setHostname("espgsm");  
   ota.setPassword("espgsm");
-  ota.begin();
+  ota.begin(); */
   
   Serial.begin(9600);
   Serial.println("ILI9341 Test!"); 
