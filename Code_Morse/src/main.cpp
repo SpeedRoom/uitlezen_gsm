@@ -19,7 +19,7 @@ using namespace std;
 #define LEDlampRed 5
 
 //OTA
-OTAlib ota("NETGEAR68", "excitedtuba713");
+/* OTAlib ota("NETGEAR68", "excitedtuba713"); */
 
 int count_values =0;
 int total_count=0;
@@ -125,11 +125,11 @@ void read_sensor(){
 
 void setup() {
   // OTA
-  ota.setHostname("espultrasoon");  
+ /*  ota.setHostname("espultrasoon");  
   ota.setPassword("espultrasoon");
   ota.begin();
-  
-  Serial.begin (9600);
+   */
+  Serial.begin (115200);
   pinMode(trigPin,   OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(LEDlampYellow, OUTPUT);

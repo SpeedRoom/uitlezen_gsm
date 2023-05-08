@@ -25,7 +25,7 @@
 #define TFT_RESET3  26
 
 //OTA
-OTAlib ota("NETGEAR68", "excitedtuba713");
+//OTAlib ota("NETGEAR68", "excitedtuba713");
 
 
 
