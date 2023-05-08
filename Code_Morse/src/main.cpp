@@ -68,6 +68,7 @@ void reset(){
 }
 
 void read_sensor(){
+  Serial.println("reading sensor");
   long durationindigit, distanceincm;
   digitalWrite(trigPin, LOW);   
   delayMicroseconds(2);
@@ -76,6 +77,8 @@ void read_sensor(){
   digitalWrite(trigPin, LOW);
   durationindigit = pulseIn(echoPin, HIGH);
   distanceincm = (durationindigit/5) /13;
+  Serial.print("distance in cm: ");
+  Serial.println(distanceincm);
   if (distanceincm < 20 and distanceincm>0) {
     digitalWrite(LEDlampYellow,   HIGH);
     count_values++;
@@ -106,13 +109,15 @@ void read_sensor(){
         Serial.println("de code is sws correct ");
         digitalWrite(LEDlampGreen,HIGH);
         digitalWrite(LEDlampRed,LOW);
-        digitalWrite(Lock_Relay_pin,HIGH);
+        digitalWrite(Lock_Relay_pin,LOW);
         delay(5000);
         reset();
       }
       else {
         Serial.println("code is niet coreect broer");
         digitalWrite(LEDlampRed,HIGH);
+        digitalWrite (Lock_Relay_pin,HIGH);
+        digitalWrite(LEDlampGreen,LOW);
         delay(2000);
         digitalWrite(LEDlampRed,LOW);
         reset();
@@ -138,7 +143,7 @@ void setup() {
   pinMode(Lock_Relay_pin,OUTPUT);
   pinMode(buttonStartPin, INPUT_PULLDOWN);
   pinMode(buttonResetPin, INPUT_PULLDOWN);
-  digitalWrite(Lock_Relay_pin,LOW);
+  digitalWrite(Lock_Relay_pin,HIGH);
 }
 
 void   loop() {
