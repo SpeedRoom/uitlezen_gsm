@@ -9,6 +9,8 @@
 #include <SD.h>
 #include <WiFi.h>
 #include "OTAlib.h"
+#include <PubSubClient.h>
+
 //scherm 1
 #define TFT_SCK    18
 #define TFT_MOSI   23
@@ -24,10 +26,39 @@
 #define TFT_DC3     25
 #define TFT_RESET3  26
 
+bool schermpjes_aan = false;
+
 //OTA
-//OTAlib ota("NETGEAR68", "excitedtuba713");
+OTAlib ota("NETGEAR68", "excitedtuba713");
 
+//MQTT -
+#define SSID          "NETGEAR68"
+#define PWD           "excitedtuba713"
+#define MQTT_SERVER   "192.168.1.61"  
+#define MQTT_PORT     1883
+#define topic  "esp_gsm/input"
 
+WiFiClient espClient;
+PubSubClient client(espClient);
+WiFiClient espClient;
+PubSubClient client(espClient);
+void setup_wifi(){
+  delay(10);
+  Serial.println("Connecting to WiFi..");
+  WiFi.begin(SSID, PWD);
+
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+}
+
+//- MQTT
 
 
 // Use hardware SPI (on ESP D4 and D8 as above)
@@ -41,6 +72,53 @@ struct opmaak{
   int TextSize;
   int TextColor;
 };
+
+// MQTT -
+void reconnect()
+{
+  // Loop until we're reconnected
+  while (!client.connected())
+  {
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect
+    // creat unique client ID
+    // in Mosquitto broker enable anom. access
+    if (client.connect("ESP32Client"))
+    {
+      Serial.println("connected");
+      // Subscribe
+      client.subscribe(topic);
+    }
+    else
+    {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 1 second");
+      vTaskDelay(1000/portTICK_RATE_MS);
+    }
+    taskYIELD();
+  }
+}
+
+// Handle incomming messages from the broker
+void callback(char* topic, byte* payload, unsigned int length) {
+  String response;
+
+  for (int i = 0; i < length; i++) {
+    response += (char)payload[i];
+  }
+  Serial.print("Message arrived [");
+  Serial.print(topic);
+  Serial.print("] ");
+  Serial.println(response);
+  if(response = 'open'){
+    schermpjes_aan = true;
+  }
+  else{
+    schermpjes_aan = false;
+  }
+}
+//- MQTT 
 
 opmaak tekst1[] = {
   {"Twee smokkelaars opgepakt na bootdrama in Italie waarbij 61 migranten om het leven kwamen",3,0XFFFF},
@@ -108,6 +186,12 @@ void setup() {
   /* ota.setHostname("espgsm");  
   ota.setPassword("espgsm");
   ota.begin(); */
+
+  //MQTT -
+  setup_wifi();
+  client.setServer(MQTT_SERVER, MQTT_PORT);
+  client.setCallback(callback); // Initialize the callback routine
+  //- MQTT
   
   Serial.begin(9600);
   Serial.println("ILI9341 Test!"); 
@@ -122,9 +206,19 @@ void setup() {
 int i = 0;
 int j = 0;
 int z = 0;
+
+
 void loop() {
+	//MQTT -
+  if (!client.connected())
+  {
+      reconnect();
+  }
+  client.loop();
+  //- MQTT
+
  int size_tekst1=sizeof(tekst1)/sizeof(tekst1[1]); 
-    if (i==2){
+    if (i==2){  // & schermpjes_aan = true
       tft1.fillScreen(ILI9341_BLACK);
       tft1.setCursor(0, 0);
       tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
@@ -135,7 +229,7 @@ void loop() {
       tft1.print(tekst1[i+2].tekst);
       i+=3;
     }
-    else if (i==0){
+    else if (i==0){ // & schermpjes_aan = true
       tft1.fillScreen(ILI9341_BLACK);
       tft1.setCursor(0, 0);
       tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
@@ -145,7 +239,7 @@ void loop() {
       i=2;
     }
     
-    else{
+    else{ // & schermpjes_aan = true
       tft1.fillScreen(ILI9341_BLACK);
       tft1.setCursor(0, 0);
       tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
@@ -156,7 +250,7 @@ void loop() {
       i=0;
     }
     int size_tekst2=sizeof(tekst2)/sizeof(tekst2[1]); 
-    if (j==11){
+    if (j==11){ // & schermpjes_aan = true
       tft2.fillScreen(ILI9341_BLACK);
       tft2.setCursor(0, 0);
       tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
@@ -169,7 +263,7 @@ void loop() {
     }
 
    
-    else if ((j==0) || (j ==5)||(j==14)){
+    else if ((j==0) || (j ==5)||(j==14)){ // & schermpjes_aan = true
       tft2.fillScreen(ILI9341_BLACK);
       tft2.setCursor(0, 0);
       tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
@@ -179,7 +273,7 @@ void loop() {
       j+=2;
     }
     
-    else{
+    else{ // & schermpjes_aan = true
       tft2.fillScreen(ILI9341_BLACK);
       tft2.setCursor(0, 0);
       tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
@@ -191,7 +285,7 @@ void loop() {
     }
 
     int size_tekst3=sizeof(tekst3)/sizeof(tekst3[1]); 
-    if (z==4){
+    if (z==4){ // & schermpjes_aan = true
       tft3.fillScreen(ILI9341_BLACK);
       tft3.setCursor(0, 0);
       tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
@@ -204,7 +298,7 @@ void loop() {
     }
 
    
-    else if ((z==0) || (z ==8)){
+    else if ((z==0) || (z ==8)){ // & schermpjes_aan = true
       tft3.fillScreen(ILI9341_BLACK);
       tft3.setCursor(0, 0);
       tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
@@ -214,7 +308,7 @@ void loop() {
       z+=2;
     }
     
-    else{
+    else{ // & schermpjes_aan = true
       tft3.fillScreen(ILI9341_BLACK);
       tft3.setCursor(0, 0);
       tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
