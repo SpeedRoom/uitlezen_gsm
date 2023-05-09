@@ -217,8 +217,9 @@ void loop() {
   client.loop();
   //- MQTT
 
+if(schermpjes_aan=true){
  int size_tekst1=sizeof(tekst1)/sizeof(tekst1[1]); 
-    if (i==2){  // & schermpjes_aan = true
+    if (i==2){  
       tft1.fillScreen(ILI9341_BLACK);
       tft1.setCursor(0, 0);
       tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
@@ -229,7 +230,7 @@ void loop() {
       tft1.print(tekst1[i+2].tekst);
       i+=3;
     }
-    else if (i==0){ // & schermpjes_aan = true
+    else if (i==0){ 
       tft1.fillScreen(ILI9341_BLACK);
       tft1.setCursor(0, 0);
       tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
@@ -239,7 +240,7 @@ void loop() {
       i=2;
     }
     
-    else{ // & schermpjes_aan = true
+    else{ 
       tft1.fillScreen(ILI9341_BLACK);
       tft1.setCursor(0, 0);
       tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
@@ -250,7 +251,7 @@ void loop() {
       i=0;
     }
     int size_tekst2=sizeof(tekst2)/sizeof(tekst2[1]); 
-    if (j==11){ // & schermpjes_aan = true
+    if (j==11){ 
       tft2.fillScreen(ILI9341_BLACK);
       tft2.setCursor(0, 0);
       tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
@@ -263,7 +264,7 @@ void loop() {
     }
 
    
-    else if ((j==0) || (j ==5)||(j==14)){ // & schermpjes_aan = true
+    else if ((j==0) || (j ==5)||(j==14)){ 
       tft2.fillScreen(ILI9341_BLACK);
       tft2.setCursor(0, 0);
       tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
@@ -273,7 +274,7 @@ void loop() {
       j+=2;
     }
     
-    else{ // & schermpjes_aan = true
+    else{
       tft2.fillScreen(ILI9341_BLACK);
       tft2.setCursor(0, 0);
       tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
@@ -285,7 +286,7 @@ void loop() {
     }
 
     int size_tekst3=sizeof(tekst3)/sizeof(tekst3[1]); 
-    if (z==4){ // & schermpjes_aan = true
+    if (z==4){
       tft3.fillScreen(ILI9341_BLACK);
       tft3.setCursor(0, 0);
       tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
@@ -298,7 +299,7 @@ void loop() {
     }
 
    
-    else if ((z==0) || (z ==8)){ // & schermpjes_aan = true
+    else if ((z==0) || (z ==8)){ 
       tft3.fillScreen(ILI9341_BLACK);
       tft3.setCursor(0, 0);
       tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
@@ -308,7 +309,7 @@ void loop() {
       z+=2;
     }
     
-    else{ // & schermpjes_aan = true
+    else{
       tft3.fillScreen(ILI9341_BLACK);
       tft3.setCursor(0, 0);
       tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
@@ -318,6 +319,7 @@ void loop() {
     if (z==(size_tekst3)){
       z=0;
     }
-  
+}
     delay(10000);
+    //ota.taskYIELD()
 }
