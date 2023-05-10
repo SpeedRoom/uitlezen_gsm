@@ -63,7 +63,7 @@ void reset(){
     sequence1.clear();
     digitalWrite(LEDlampGreen,LOW);
     digitalWrite(LEDlampRed,LOW);
-    digitalWrite(Lock_Relay_pin,LOW);
+    digitalWrite(Lock_Relay_pin,HIGH);
     Serial.println("alles cleared");
 }
 
