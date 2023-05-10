@@ -193,8 +193,6 @@ void setup() {
   client.setCallback(callback); // Initialize the callback routine
   //- MQTT
   
-  Serial.begin(9600);
-  Serial.println("ILI9341 Test!"); 
  
   tft1.begin();
   tft2.begin();
@@ -203,10 +201,119 @@ void setup() {
   tft2.setRotation(0);
   tft1.setRotation(0);
 }
+
 int i = 0;
 int j = 0;
 int z = 0;
 
+void loop_tekst1(){
+  int size_tekst1=sizeof(tekst1)/sizeof(tekst1[1]); 
+
+  if (i==2){  
+    tft1.fillScreen(ILI9341_BLACK);
+    tft1.setCursor(0, 0);
+    tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
+    tft1.print(tekst1[i].tekst);
+    tft1.setTextColor(tekst1[i+1].TextColor);  tft1.setTextSize(tekst1[i+1].TextSize);
+    tft1.print(tekst1[i+1].tekst);
+    tft1.setTextColor(tekst1[i+2].TextColor);  tft1.setTextSize(tekst1[i+2].TextSize);
+    tft1.print(tekst1[i+2].tekst);
+    i+=3;
+  }
+  else if (i==0){ 
+    tft1.fillScreen(ILI9341_BLACK);
+    tft1.setCursor(0, 0);
+    tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
+    tft1.println(tekst1[i].tekst);
+    tft1.setTextColor(tekst1[i+1].TextColor);  tft1.setTextSize(tekst1[i+1].TextSize);
+    tft1.println(tekst1[i+1].tekst);
+    i=2;
+  }
+  else{ 
+    tft1.fillScreen(ILI9341_BLACK);
+    tft1.setCursor(0, 0);
+    tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
+    tft1.println(tekst1[i].tekst);
+    i++;
+  }
+  
+  if (i==(size_tekst1)){
+    i=0;
+  }
+}
+
+void loop_tekst2(){
+  int size_tekst2=sizeof(tekst2)/sizeof(tekst2[1]); 
+
+  if (j==11){
+    tft2.fillScreen(ILI9341_BLACK);
+    tft2.setCursor(0, 0);
+    tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
+    tft2.print(tekst2[j].tekst);
+    tft2.setTextColor(tekst2[j+1].TextColor);  tft2.setTextSize(tekst2[j+1].TextSize);
+    tft2.print(tekst2[j+1].tekst);
+    tft2.setTextColor(tekst2[j+2].TextColor);  tft2.setTextSize(tekst2[j+2].TextSize);
+    tft2.print(tekst2[j+2].tekst);
+    j+=3;
+  }
+  else if ((j==0) || (j ==5)||(j==14)){
+    tft2.fillScreen(ILI9341_BLACK);
+    tft2.setCursor(0, 0);
+    tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
+    tft2.println(tekst2[j].tekst);
+    tft2.setTextColor(tekst2[j+1].TextColor);  tft2.setTextSize(tekst2[j+1].TextSize);
+    tft2.println(tekst2[j+1].tekst);
+    j+=2;
+  }
+  else{ 
+    tft2.fillScreen(ILI9341_BLACK);
+    tft2.setCursor(0, 0);
+    tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
+    tft2.println(tekst2[j].tekst);
+    j++;
+  }
+
+  if (j==(size_tekst2)){
+    j=0;
+  }
+}
+
+void loop_tekst3(){
+  int size_tekst3=sizeof(tekst3)/sizeof(tekst3[1]); 
+
+  if (z==4){ 
+    tft3.fillScreen(ILI9341_BLACK);
+    tft3.setCursor(0, 0);
+    tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
+    tft3.print(tekst3[z].tekst);
+    tft3.setTextColor(tekst3[z+1].TextColor);  tft3.setTextSize(tekst3[z+1].TextSize);
+    tft3.print(tekst3[z+1].tekst);
+    tft3.setTextColor(tekst3[z+2].TextColor);  tft3.setTextSize(tekst3[z+2].TextSize);
+    tft3.print(tekst3[z+2].tekst);
+    z+=3;
+  }
+  else if ((z==0) || (z ==8)){ 
+    tft3.fillScreen(ILI9341_BLACK);
+    tft3.setCursor(0, 0);
+    tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
+    tft3.println(tekst3[z].tekst);
+    tft3.setTextColor(tekst3[z+1].TextColor);  tft3.setTextSize(tekst3[z+1].TextSize);
+    tft3.println(tekst3[z+1].tekst);
+    z+=2;
+  }
+  else{ 
+    tft3.fillScreen(ILI9341_BLACK);
+    tft3.setCursor(0, 0);
+    tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
+    tft3.println(tekst3[z].tekst);
+    z++;
+  }
+
+  if (z==(size_tekst3)){
+    z=0;
+  }
+  
+}
 
 void loop() {
 	//MQTT -
@@ -217,109 +324,11 @@ void loop() {
   client.loop();
   //- MQTT
 
-if(schermpjes_aan=true){
- int size_tekst1=sizeof(tekst1)/sizeof(tekst1[1]); 
-    if (i==2){  
-      tft1.fillScreen(ILI9341_BLACK);
-      tft1.setCursor(0, 0);
-      tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
-      tft1.print(tekst1[i].tekst);
-      tft1.setTextColor(tekst1[i+1].TextColor);  tft1.setTextSize(tekst1[i+1].TextSize);
-      tft1.print(tekst1[i+1].tekst);
-      tft1.setTextColor(tekst1[i+2].TextColor);  tft1.setTextSize(tekst1[i+2].TextSize);
-      tft1.print(tekst1[i+2].tekst);
-      i+=3;
-    }
-    else if (i==0){ 
-      tft1.fillScreen(ILI9341_BLACK);
-      tft1.setCursor(0, 0);
-      tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
-      tft1.println(tekst1[i].tekst);
-      tft1.setTextColor(tekst1[i+1].TextColor);  tft1.setTextSize(tekst1[i+1].TextSize);
-      tft1.println(tekst1[i+1].tekst);
-      i=2;
-    }
-    
-    else{ 
-      tft1.fillScreen(ILI9341_BLACK);
-      tft1.setCursor(0, 0);
-      tft1.setTextColor(tekst1[i].TextColor);  tft1.setTextSize(tekst1[i].TextSize);
-      tft1.println(tekst1[i].tekst);
-      i++;
-    }
-    if (i==(size_tekst1)){
-      i=0;
-    }
-    int size_tekst2=sizeof(tekst2)/sizeof(tekst2[1]); 
-    if (j==11){ 
-      tft2.fillScreen(ILI9341_BLACK);
-      tft2.setCursor(0, 0);
-      tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
-      tft2.print(tekst2[j].tekst);
-      tft2.setTextColor(tekst2[j+1].TextColor);  tft2.setTextSize(tekst2[j+1].TextSize);
-      tft2.print(tekst2[j+1].tekst);
-      tft2.setTextColor(tekst2[j+2].TextColor);  tft2.setTextSize(tekst2[j+2].TextSize);
-      tft2.print(tekst2[j+2].tekst);
-      j+=3;
-    }
+  if (schermpjes_aan=true){
+    loop_tekst1();
+    loop_tekst2();
+    loop_tekst3();
 
-   
-    else if ((j==0) || (j ==5)||(j==14)){ 
-      tft2.fillScreen(ILI9341_BLACK);
-      tft2.setCursor(0, 0);
-      tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
-      tft2.println(tekst2[j].tekst);
-      tft2.setTextColor(tekst2[j+1].TextColor);  tft2.setTextSize(tekst2[j+1].TextSize);
-      tft2.println(tekst2[j+1].tekst);
-      j+=2;
-    }
-    
-    else{
-      tft2.fillScreen(ILI9341_BLACK);
-      tft2.setCursor(0, 0);
-      tft2.setTextColor(tekst2[j].TextColor);  tft2.setTextSize(tekst2[j].TextSize);
-      tft2.println(tekst2[j].tekst);
-      j++;
-    }
-    if (j==(size_tekst2)){
-      j=0;
-    }
-
-    int size_tekst3=sizeof(tekst3)/sizeof(tekst3[1]); 
-    if (z==4){
-      tft3.fillScreen(ILI9341_BLACK);
-      tft3.setCursor(0, 0);
-      tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
-      tft3.print(tekst3[z].tekst);
-      tft3.setTextColor(tekst3[z+1].TextColor);  tft3.setTextSize(tekst3[z+1].TextSize);
-      tft3.print(tekst3[z+1].tekst);
-      tft3.setTextColor(tekst3[z+2].TextColor);  tft3.setTextSize(tekst3[z+2].TextSize);
-      tft3.print(tekst3[z+2].tekst);
-      z+=3;
-    }
-
-   
-    else if ((z==0) || (z ==8)){ 
-      tft3.fillScreen(ILI9341_BLACK);
-      tft3.setCursor(0, 0);
-      tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
-      tft3.println(tekst3[z].tekst);
-      tft3.setTextColor(tekst3[z+1].TextColor);  tft3.setTextSize(tekst3[z+1].TextSize);
-      tft3.println(tekst3[z+1].tekst);
-      z+=2;
-    }
-    
-    else{
-      tft3.fillScreen(ILI9341_BLACK);
-      tft3.setCursor(0, 0);
-      tft3.setTextColor(tekst3[z].TextColor);  tft3.setTextSize(tekst3[z].TextSize);
-      tft3.println(tekst3[z].tekst);
-      z++;
-    }
-    if (z==(size_tekst3)){
-      z=0;
-    }
-}
     delay(10000);
-    //ota.taskYIELD()
+  }  
 }
