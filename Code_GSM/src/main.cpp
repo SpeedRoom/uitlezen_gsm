@@ -28,9 +28,6 @@
 
 bool schermpjes_aan = false;
 
-//OTA
-OTAlib ota("NETGEAR68", "excitedtuba713");
-
 //MQTT -
 #define SSID          "NETGEAR68"
 #define PWD           "excitedtuba713"
@@ -40,8 +37,7 @@ OTAlib ota("NETGEAR68", "excitedtuba713");
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-WiFiClient espClient;
-PubSubClient client(espClient);
+
 void setup_wifi(){
   delay(10);
   Serial.println("Connecting to WiFi..");
@@ -60,6 +56,8 @@ void setup_wifi(){
 
 //- MQTT
 
+//OTA
+OTAlib ota(SSID, PWD);
 
 // Use hardware SPI (on ESP D4 and D8 as above)
 Adafruit_ILI9341 tft1 = Adafruit_ILI9341(TFT_CS, TFT_DC,TFT_MOSI,TFT_SCK,TFT_RESET);

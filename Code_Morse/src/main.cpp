@@ -17,6 +17,8 @@ using namespace std;
 #define LEDlampGreen 18
 #define Lock_Relay_pin 32
 #define LEDlampRed 5
+#define SSID          "NETGEAR68"
+#define PWD           "excitedtuba713"
 
 int count_values =0;
 int total_count=0;
@@ -43,6 +45,7 @@ SequenceToDigit convert_map[] = {
 };
 
 //OTA
+OTAlib ota(SSID, PWD);
 /* OTAlib ota("NETGEAR68", "excitedtuba713"); */
 
 int morseToDigit(string sequence) {
@@ -68,6 +71,7 @@ void check_code(){
         digitalWrite(Lock_Relay_pin,LOW);
 
         delay(5000);
+        //taskYIELD();
 
         reset();
       }
@@ -79,7 +83,7 @@ void check_code(){
         digitalWrite (Lock_Relay_pin,HIGH);
         
         delay(2000);
-
+        //taskYIELD();
         digitalWrite(LEDlampRed,LOW);
         
         reset();
@@ -141,10 +145,9 @@ void reset(){
 
 void setup() {
   // OTA
- /*  ota.setHostname("espultrasoon");  
-  ota.setPassword("espultrasoon");
-  ota.begin();
-   */
+	ota.setHostname("espultrasoon");  
+	ota.setPassword("espultrasoon");
+	ota.begin();
 
   Serial.begin (115200);
   pinMode(trigPin,   OUTPUT);
@@ -165,6 +168,7 @@ void loop() {
   if (digitalRead(buttonResetPin)){
     reset();
     delay(100);
+    //taskYIELD();
   }
   if (digitalRead(buttonStartPin)){
       start_code=true;
@@ -173,5 +177,6 @@ void loop() {
   if (start_code){
     read_sensor();
     delay(300);    
+    //taskYIELD();
   }
 }
