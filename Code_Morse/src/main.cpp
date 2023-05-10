@@ -18,14 +18,11 @@ using namespace std;
 #define Lock_Relay_pin 32
 #define LEDlampRed 5
 
-//OTA
-/* OTAlib ota("NETGEAR68", "excitedtuba713"); */
-
 int count_values =0;
 int total_count=0;
-string sequence1 ="";
-string total_code="";
 bool start_code = false;
+string sequence ="";
+string total_code="";
 string code = "8152";
 
 struct SequenceToDigit{
@@ -45,10 +42,12 @@ SequenceToDigit convert_map[] = {
     {"-----", 0}
 };
 
-// Function to convert Morse code to digits
-int morseToDigit(string sequence1) {
+//OTA
+/* OTAlib ota("NETGEAR68", "excitedtuba713"); */
+
+int morseToDigit(string sequence) {
   for (int i=0; i<10;i++){
-    if (sequence1==convert_map[i].seq){
+    if (sequence==convert_map[i].seq){
       return convert_map[i].value;
       break;
     }
@@ -56,30 +55,54 @@ int morseToDigit(string sequence1) {
   return '\0';
 }
 
-void reset(){
+void check_code(){
+    total_code.append(to_string(morseToDigit(sequence)));
+    sequence.clear();
+
+    if (total_code.length()==4){
+      if (code == total_code){
+        Serial.println("Code correct");
+
+        digitalWrite(LEDlampGreen,HIGH);
+        digitalWrite(LEDlampRed,LOW);
+        digitalWrite(Lock_Relay_pin,LOW);
+
+        delay(5000);
+
+        reset();
+      }
+      else {
+        Serial.println("Code niet correct");
+
+        digitalWrite(LEDlampGreen,LOW);
+        digitalWrite(LEDlampRed,HIGH);
+        digitalWrite (Lock_Relay_pin,HIGH);
+        
+        delay(2000);
+
+        digitalWrite(LEDlampRed,LOW);
+        
+        reset();
+      }
+
     total_code.clear();
-    count_values = 0;
-    total_count = 0;
-    sequence1.clear();
-    digitalWrite(LEDlampGreen,LOW);
-    digitalWrite(LEDlampRed,LOW);
-    digitalWrite(Lock_Relay_pin,HIGH);
-    Serial.println("alles cleared");
+}
 }
 
 void read_sensor(){
   Serial.println("reading sensor");
-  long durationindigit, distanceincm;
+
+  long detected_digit, detected;
+
   digitalWrite(trigPin, LOW);   
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  durationindigit = pulseIn(echoPin, HIGH);
-  distanceincm = (durationindigit/5) /13;
-  Serial.print("distance in cm: ");
-  Serial.println(distanceincm);
-  if (distanceincm < 20 and distanceincm>0) {
+  detected_digit = pulseIn(echoPin, HIGH);
+  detected = (detected_digit/5) /13;
+
+  if (detected < 20 and detected>0) {
     digitalWrite(LEDlampYellow,   HIGH);
     count_values++;
   }
@@ -88,44 +111,32 @@ void read_sensor(){
     total_count=count_values;
     count_values=0;
   }
+
   if (total_count>2){
-    sequence1.append("-");
+    sequence.append("-");
     total_count=0;
   }
   else if (total_count>0){
-    sequence1.append(".");
+    sequence.append(".");
     total_count=0;
   }
-  // Serial.print(distanceincm);
-  // Serial.println("   cm");
-  if (sequence1.length()>4){
-    Serial.println(morseToDigit(sequence1));
-    total_code.append(to_string(morseToDigit(sequence1)));
-    sequence1.clear();
-    if (total_code.length()==4){
-      Serial.print("total code is:");
-      Serial.println(total_code.c_str());
-      if (code == total_code){
-        Serial.println("de code is sws correct ");
-        digitalWrite(LEDlampGreen,HIGH);
-        digitalWrite(LEDlampRed,LOW);
-        digitalWrite(Lock_Relay_pin,LOW);
-        delay(5000);
-        reset();
-      }
-      else {
-        Serial.println("code is niet coreect broer");
-        digitalWrite(LEDlampRed,HIGH);
-        digitalWrite (Lock_Relay_pin,HIGH);
-        digitalWrite(LEDlampGreen,LOW);
-        delay(2000);
-        digitalWrite(LEDlampRed,LOW);
-        reset();
-      }
-    total_code.clear();
+
+  if (sequence.length()>4){
+    check_code();
     }
+
     start_code=false;
-  }  
+}  
+
+void reset(){
+    total_code.clear();
+    count_values = 0;
+    total_count = 0;
+    sequence.clear();
+    digitalWrite(LEDlampGreen,LOW);
+    digitalWrite(LEDlampRed,LOW);
+    digitalWrite(Lock_Relay_pin,HIGH);
+    Serial.println("reset");
 }
 
 void setup() {
@@ -134,6 +145,7 @@ void setup() {
   ota.setPassword("espultrasoon");
   ota.begin();
    */
+
   Serial.begin (115200);
   pinMode(trigPin,   OUTPUT);
   pinMode(echoPin, INPUT);
@@ -143,17 +155,20 @@ void setup() {
   pinMode(Lock_Relay_pin,OUTPUT);
   pinMode(buttonStartPin, INPUT_PULLDOWN);
   pinMode(buttonResetPin, INPUT_PULLDOWN);
+
+  digitalWrite(LEDlampGreen,LOW);
+  digitalWrite(LEDlampRed,LOW);
   digitalWrite(Lock_Relay_pin,HIGH);
 }
 
-void   loop() {
+void loop() {
   if (digitalRead(buttonResetPin)){
     reset();
     delay(100);
   }
   if (digitalRead(buttonStartPin)){
       start_code=true;
-      Serial.println("start code true");
+      Serial.println("start");
   }
   if (start_code){
     read_sensor();
