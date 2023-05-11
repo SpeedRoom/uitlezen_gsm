@@ -82,7 +82,7 @@ void check_code(){
         digitalWrite(Lock_Relay_pin,LOW);
 
         delay(5000);
-        //taskYIELD();
+        taskYIELD();
 
         reset();
       }
@@ -94,7 +94,7 @@ void check_code(){
         digitalWrite (Lock_Relay_pin,HIGH);
         
         delay(2000);
-        //taskYIELD();
+        taskYIELD();
         digitalWrite(LEDlampRed,LOW);
         
         reset();
@@ -138,9 +138,9 @@ void read_sensor(){
 
   if (sequence.length()>4){
     check_code();
-    }
+  }
 
-    start_code=false;
+  start_code=false;
 }  
 
 void setup() {
@@ -168,7 +168,7 @@ void loop() {
   if (digitalRead(buttonResetPin)){
     reset();
     delay(100);
-    //taskYIELD();
+    taskYIELD();
   }
   if (digitalRead(buttonStartPin)){
       start_code=true;
@@ -177,6 +177,6 @@ void loop() {
   if (start_code){
     read_sensor();
     delay(300);    
-    //taskYIELD();
+    taskYIELD();
   }
 }

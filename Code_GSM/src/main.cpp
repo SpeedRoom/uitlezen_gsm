@@ -176,12 +176,6 @@ void setup() {
   setup_wifi();
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback); // Initialize the callback routine
-  client.setBufferSize(512);
-  client.setKeepAlive(300);
-  client.setSocketTimeout(300);
-  client.setServer(MQTT_SERVER, MQTT_PORT);
-  client.setCallback(callback); // Initialize the callback routine
-  //MQTT -
   //- MQTT
   
  
