@@ -59,7 +59,6 @@ void setup_wifi(){
   Serial.println("IP address: ");
 }
 
-// MQTT -
 void reconnect()
 {
   // Loop until we're reconnected
@@ -86,7 +85,6 @@ void reconnect()
   }
 }
 
-// Handle incomming messages from the broker
 void callback(char* topic2, byte* payload, unsigned int length) {
   String response;
 
