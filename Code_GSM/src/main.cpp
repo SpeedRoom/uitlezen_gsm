@@ -95,7 +95,7 @@ void callback(char* topic2, byte* payload, unsigned int length) {
   Serial.print(topic);
   Serial.print("] ");
   Serial.println(response);
-  if(response = 'open'){
+  if(response == "open"){
     schermpjes_aan = true;
   }
   else{
