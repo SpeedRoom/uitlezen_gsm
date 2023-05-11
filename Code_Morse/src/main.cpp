@@ -58,6 +58,17 @@ int morseToDigit(string sequence) {
   return '\0';
 }
 
+void reset(){
+    total_code.clear();
+    count_values = 0;
+    total_count = 0;
+    sequence.clear();
+    digitalWrite(LEDlampGreen,LOW);
+    digitalWrite(LEDlampRed,LOW);
+    digitalWrite(Lock_Relay_pin,HIGH);
+    Serial.println("reset");
+}
+
 void check_code(){
     total_code.append(to_string(morseToDigit(sequence)));
     sequence.clear();
@@ -131,17 +142,6 @@ void read_sensor(){
 
     start_code=false;
 }  
-
-void reset(){
-    total_code.clear();
-    count_values = 0;
-    total_count = 0;
-    sequence.clear();
-    digitalWrite(LEDlampGreen,LOW);
-    digitalWrite(LEDlampRed,LOW);
-    digitalWrite(Lock_Relay_pin,HIGH);
-    Serial.println("reset");
-}
 
 void setup() {
   // OTA
