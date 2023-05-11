@@ -38,6 +38,11 @@ bool schermpjes_aan = false;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+void callback(char* topic2, unsigned char* payload, unsigned int length);
+void reconnect();
+void setup_wifi();
+
+
 void setup_wifi(){
   delay(10);
   Serial.println("Connecting to WiFi..");
@@ -53,23 +58,6 @@ void setup_wifi(){
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
 }
-
-//- MQTT
-
-//OTA
-OTAlib ota(SSID, PWD);
-
-// Use hardware SPI (on ESP D4 and D8 as above)
-Adafruit_ILI9341 tft1 = Adafruit_ILI9341(TFT_CS, TFT_DC,TFT_MOSI,TFT_SCK,TFT_RESET);
-Adafruit_ILI9341 tft2 = Adafruit_ILI9341(TFT_CS2, TFT_DC2,TFT_MOSI,TFT_SCK,TFT_RESET2);
-Adafruit_ILI9341 tft3 = Adafruit_ILI9341(TFT_CS3, TFT_DC3,TFT_MOSI,TFT_SCK,TFT_RESET3);
-
-
-struct opmaak{
-  String tekst;
-  int TextSize;
-  int TextColor;
-};
 
 // MQTT -
 void reconnect()
@@ -99,7 +87,7 @@ void reconnect()
 }
 
 // Handle incomming messages from the broker
-void callback(char* topic, byte* payload, unsigned int length) {
+void callback(char* topic2, byte* payload, unsigned int length) {
   String response;
 
   for (int i = 0; i < length; i++) {
@@ -116,7 +104,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
     schermpjes_aan = false;
   }
 }
-//- MQTT 
+
+//OTA
+OTAlib ota(SSID, PWD);
+
+// Use hardware SPI (on ESP D4 and D8 as above)
+Adafruit_ILI9341 tft1 = Adafruit_ILI9341(TFT_CS, TFT_DC,TFT_MOSI,TFT_SCK,TFT_RESET);
+Adafruit_ILI9341 tft2 = Adafruit_ILI9341(TFT_CS2, TFT_DC2,TFT_MOSI,TFT_SCK,TFT_RESET2);
+Adafruit_ILI9341 tft3 = Adafruit_ILI9341(TFT_CS3, TFT_DC3,TFT_MOSI,TFT_SCK,TFT_RESET3);
+
+
+struct opmaak{
+  String tekst;
+  int TextSize;
+  int TextColor;
+};
 
 opmaak tekst1[] = {
   {"Twee smokkelaars opgepakt na bootdrama in Italie waarbij 61 migranten om het leven kwamen",3,0XFFFF},
@@ -165,30 +167,23 @@ opmaak tekst3[] = {
   {"Voorlopig zijn er geen aanwijzingen dat er een link zou zijn met de aanslag van afgelopen nacht in Hoboken.",2,0xFFFF}
 };
 
-
-void Alinea6_1(){
-  tft1.fillScreen(ILI9341_BLACK);
-  tft1.setCursor(0, 0);
-  tft1.setTextColor(ILI9341_WHITE);  tft1.setTextSize(2);
-  tft1.println();
-  tft1.setTextSize(3);
-  tft1.println();
-  tft1.setTextSize(2);
-  tft1.println();
-  delay(500);
-}
-
 void setup() {
 
   // OTA
-  /* ota.setHostname("espgsm");  
+  ota.setHostname("espgsm");  
   ota.setPassword("espgsm");
-  ota.begin(); */
+  ota.begin(); 
 
   //MQTT -
   setup_wifi();
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback); // Initialize the callback routine
+  client.setBufferSize(512);
+  client.setKeepAlive(300);
+  client.setSocketTimeout(300);
+  client.setServer(MQTT_SERVER, MQTT_PORT);
+  client.setCallback(callback); // Initialize the callback routine
+  //MQTT -
   //- MQTT
   
  
