@@ -1,11 +1,3 @@
-"Source:","C:\Users\gheys\OneDrive - KU Leuven\Documents\GitHub\uitlezen_gsm\PCB_Morse\pcb_morse.kicad_sch"
-"Date:","14/05/2023 12:44:15"
-"Tool:","Eeschema (7.0.0)"
-"Generator:","C:\Program Files\KiCad\7.0\bin\scripting\plugins/bom_csv_grouped_by_value.py"
-"Component Count:","42"
-
-"Collated Components:"
-
 "Item","Qty","Reference(s)","Value","LibPart","Footprint","Datasheet","DNP","Sim.Device","Sim.Pins"
 "1","1","Barrel_Jack1","Barrel_Jack","Connector:Barrel_Jack","Connector_BarrelJack:BarrelJack_GCT_DCJ200-10-A_Horizontal","~","","","",""
 "2","1","C1","47uF/6.3V","Device:C","Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder","~","","","",""
