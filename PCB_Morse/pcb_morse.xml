@@ -2,7 +2,7 @@
 <export version="E">
   <design>
     <source>C:\Users\gheys\OneDrive - KU Leuven\Documents\GitHub\uitlezen_gsm\PCB_Morse\pcb_morse.kicad_sch</source>
-    <date>14/05/2023 12:44:15</date>
+    <date>14/05/2023 13:13:54</date>
     <tool>Eeschema (7.0.0)</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -872,7 +872,7 @@
       <node ref="R16" pin="1" pintype="passive"/>
       <node ref="R3" pin="1" pintype="passive"/>
       <node ref="RESET1" pin="1" pinfunction="1A" pintype="passive"/>
-      <node ref="START1" pin="1" pinfunction="1A" pintype="passive"/>
+      <node ref="START1" pin="1" pinfunction="1B" pintype="passive"/>
     </net>
     <net code="2" name="+12V">
       <node ref="Barrel_Jack1" pin="1" pintype="passive"/>
