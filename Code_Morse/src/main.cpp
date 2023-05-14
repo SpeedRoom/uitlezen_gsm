@@ -1,4 +1,4 @@
-// naam esp: espultrasoon
+/// naam esp: espultrasoon
 // wachtwoord esp: espultrasoon
 
 #include <Arduino.h>
@@ -66,8 +66,9 @@ void reset(){//reset functie
     digitalWrite(LEDlampGreen,LOW);
     digitalWrite(LEDlampRed,LOW);
     digitalWrite(LEDlampYellow,LOW);
-    digitalWrite(Lock_Relay_pin,HIGH);
+    digitalWrite(Lock_Relay_pin,LOW);
     Serial.println("reset");
+    start_code = false;
 }
 
 void check_code(){//checkt of de code correct is
@@ -78,10 +79,8 @@ void check_code(){//checkt of de code correct is
 
         digitalWrite(LEDlampGreen,HIGH);
         digitalWrite(LEDlampRed,LOW);
-        digitalWrite(Lock_Relay_pin,LOW);
-
-        vTaskDelay(5000/ portTICK_PERIOD_MS);
         digitalWrite(Lock_Relay_pin,HIGH);
+        vTaskDelay(5000/ portTICK_PERIOD_MS);
         reset();
       }
       else {
@@ -89,11 +88,10 @@ void check_code(){//checkt of de code correct is
 
         digitalWrite(LEDlampGreen,LOW);
         digitalWrite(LEDlampRed,HIGH);
-        digitalWrite (Lock_Relay_pin,HIGH);
+        digitalWrite (Lock_Relay_pin,LOW);
         
         vTaskDelay(2000 / portTICK_PERIOD_MS);
         digitalWrite(LEDlampRed,LOW);
-        
         reset();
       }
 
@@ -160,7 +158,7 @@ void setup() {//setup
 
   digitalWrite(LEDlampGreen,LOW);
   digitalWrite(LEDlampRed,LOW);
-  digitalWrite(Lock_Relay_pin,HIGH);
+  digitalWrite(Lock_Relay_pin,LOW);
 }
 
 void loop() {
