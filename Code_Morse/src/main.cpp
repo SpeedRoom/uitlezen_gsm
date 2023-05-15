@@ -100,7 +100,6 @@ void check_code(){//checkt of de code correct is
 }
 
 void read_sensor(){//leest de sensor uit
-  Serial.println("reading sensor");
   long detected;
 
   digitalWrite(trigPin, LOW);
