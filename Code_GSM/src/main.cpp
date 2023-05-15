@@ -104,7 +104,7 @@ void callback(char* topic2, byte* payload, unsigned int length) {
 }
 
 //OTA
-OTAlib ota(SSID, PWD);
+//OTAlib ota(SSID, PWD);
 
 // Use hardware SPI (on ESP D4 and D8 as above)
 Adafruit_ILI9341 tft1 = Adafruit_ILI9341(TFT_CS, TFT_DC,TFT_MOSI,TFT_SCK,TFT_RESET);
@@ -166,19 +166,14 @@ opmaak tekst3[] = {
 };
 
 void setup() {
-
-  // OTA
-  ota.setHostname("espgsm");  
-  ota.setPassword("espgsm");
-  ota.begin(); 
+  Serial.begin(115200);
 
   //MQTT -
   setup_wifi();
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(callback); // Initialize the callback routine
   //- MQTT
-  
- 
+
   tft1.begin();
   tft2.begin();
   tft3.begin();
@@ -297,7 +292,6 @@ void loop_tekst3(){
   if (z==(size_tekst3)){
     z=0;
   }
-  
 }
 
 void loop() {
@@ -309,11 +303,10 @@ void loop() {
   client.loop();
   //- MQTT
 
-  if (schermpjes_aan=true){
+  if (schermpjes_aan==true){
     loop_tekst1();
     loop_tekst2();
     loop_tekst3();
-
-    delay(10000);
+    vTaskDelay(10000/portTICK_PERIOD_MS);
   }  
 }

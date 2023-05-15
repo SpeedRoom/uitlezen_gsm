@@ -80,7 +80,7 @@ void check_code(){//checkt of de code correct is
         digitalWrite(LEDlampGreen,HIGH);
         digitalWrite(LEDlampRed,LOW);
         digitalWrite(Lock_Relay_pin,HIGH);
-        vTaskDelay(5000/ portTICK_PERIOD_MS);
+        vTaskDelay(20000/ portTICK_PERIOD_MS);
         reset();
       }
       else {
